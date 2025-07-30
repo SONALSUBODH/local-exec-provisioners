@@ -17,3 +17,8 @@ resource "aws_instance" "web" {
 provisioner "local-exec" {
     command = "echo$ {self.public_ip} >> ip_list.txt"
 }
+resource "aws_security_group" "tf_sg" {
+  name        = "tf_sg"
+  description = "Allow HTTPS to web server"
+  vpc_id      = "vpc-05bdcc8880aab85ab"
+}
