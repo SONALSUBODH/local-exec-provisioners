@@ -10,7 +10,7 @@ resource "aws_key_pair" "example" {
 }
 
 resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = "ami-0f918f7e67a3323f0"
   instance_type = local.instance_type
   key_name      = aws_key_pair.example.key_name
 }
