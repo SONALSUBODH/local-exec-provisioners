@@ -6,20 +6,34 @@ provider "aws" {
 
 resource "aws_key_pair" "example" {
   key_name   = "key"
-  public_key = file("~/.ssh/id_rsa.pub")
+  public_key = ("/ home/ubuntu/.ssh/authorized_keys/ssh-rsa")
 }
 
 resource "aws_instance" "web" {
-  ami           = "ami-0f918f7e67a3323f0"
-  instance_type = "t2 micro"
-  key_name      = aws_key_pair.example.key_name
+  ami                    = "ami-0f918f7e67a3323f0"
+  instance_type          = "t2.micro"
+  
+  provisioner "local-exec" {
+    command = "echo ${self.public_ip} >> ip_list.txt"
+  }
 }
-provisioner "local-exec" {
-    command = "echo$ {self.public_ip} >> ip_list.txt"
-}
+
 resource "aws_security_group" "tf_sg" {
-  name        = "tf_sg"
+  name        = "tf_sg15"
   description = "Allow HTTPS to web server"
   vpc_id      = "vpc-05bdcc8880aab85ab"
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
