@@ -11,7 +11,7 @@ resource "aws_key_pair" "example" {
 
 resource "aws_instance" "web" {
   ami           = "ami-0f918f7e67a3323f0"
-  instance_type = local.instance_type
+  instance_type = "t2 micro"
   key_name      = aws_key_pair.example.key_name
 }
 provisioner "local-exec" {
@@ -22,3 +22,4 @@ resource "aws_security_group" "tf_sg" {
   description = "Allow HTTPS to web server"
   vpc_id      = "vpc-05bdcc8880aab85ab"
 }
+
